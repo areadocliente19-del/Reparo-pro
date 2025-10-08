@@ -278,13 +278,23 @@ const App: React.FC = () => {
 
 
   // --- RENDER LOGIC ---
+  if (currentView === 'customerPortal' && activeQuote) {
+    return (
+      <div className="bg-gray-900 min-h-screen text-gray-300">
+        <main className="container mx-auto p-4 md:p-8">
+          <CustomerPortal quote={activeQuote} />
+        </main>
+      </div>
+    );
+  }
+
   if (invalidTokenError) {
     return (
       <div className="bg-gray-900 min-h-screen flex items-center justify-center p-4 text-gray-300">
         <Card className="text-center max-w-md w-full">
           <h2 className="text-2xl font-bold text-red-400 mt-4 mb-2">Link Inválido</h2>
-          <p className="mb-6 text-gray-400">O link de acesso não é válido. Entre em contato com a oficina.</p>
-          <Button onClick={() => setInvalidTokenError(false)} variant="secondary">Voltar</Button>
+          <p className="mb-6 text-gray-400">O link de acesso não é válido ou o serviço foi concluído. Entre em contato com a oficina.</p>
+          <Button onClick={() => { setInvalidTokenError(false); handleGoToDashboard(); }} variant="secondary">Voltar</Button>
         </Card>
       </div>
     );
@@ -295,9 +305,6 @@ const App: React.FC = () => {
   }
   
   const renderContent = () => {
-    if (currentView === 'customerPortal' && activeQuote) {
-        return <CustomerPortal quote={activeQuote} onUpdateService={handleUpdateService} />;
-    }
     if (currentView === 'manageService' && activeQuote) {
         return <ManageService quote={activeQuote} onUpdateService={handleUpdateService} onBack={handleGoToDashboard} />;
     }
